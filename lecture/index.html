@@ -4,11 +4,17 @@
   <!-- 개발용: development.js 배포용: production.js -->
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+  <!-- babel -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 </head>
 
 <body>
-  <div id="root"></div> <!-- 결과: <div id="root"><button>Like</button></div> -->
-  <script>
+  <div id="root"></div>
+  <!-- 결과: <div id="root"><button>Like</button></div> -->
+
+  <!-- babel 추가 후 script type을 "text/babel"을 추가 해주어야 한다. -->
+  <script type="text/babel">
     // 태그를 만들어주는 함수
     const e = React.createElement;
 
@@ -18,18 +24,31 @@
         super(props);
         this.state = {
           liked: false, // 기본값
-
-        }
+        };
       }
 
       render() {
-        return e('button', { onClick: () => { this.setState({ liked: true }) }, type: 'submit' }, this.state.liked === true ? 'Liked' : 'Like');
+        return (
+          // JSX ( JS + XML )
+          // JSX Element는 React.createElement이다.
+          <button
+            type="submit"
+            onClick={() => {
+              this.setState({ liked: true });
+            }}
+          >
+            {this.state.liked ? 'Liked' : 'Like'}
+          </button>
+        );
+
+        // return e('button', { onClick: () => { this.setState({ liked: true }) }, type: 'submit' }, this.state.liked === true ? 'Liked' : 'Like');
         // <button onClick="() => { console.log('clicked') }" type="submit">Like</button> 이런 태그를 만들겠다.
       }
     }
   </script>
-  <script>
-    ReactDOM.render(e(LikeButton), document.querySelector('#root'));
+  <script type="text/babel">
+    ReactDOM.render(<LikeButton />, document.querySelector('#root'));
+    // ReactDOM.render(e(LikeButton), document.querySelector('#root'));
   </script>
 </body>
 
