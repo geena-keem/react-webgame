@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>구구단</title>
+
+    <!-- 개발용: development.js 배포용: production.js -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@16/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+    ></script>
+
+    <!-- babel -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      class GuGudan extends React.Component {
+        // constructor(props) {
+        //   super(props);
+
+        //   // ceil(): 주어진 숫자보다 크거나 같은 숫자 중 가장 작은 숫자를 integer로 반환한다.
+        //   this.state = {
+        //     first: Math.ceil(Math.random() * 9),
+        //     second: Math.ceil(Math.random() * 9),
+        //     value: '', // input에 들어갈 값
+        //     result: '', // 결과값
+        //   };
+        // }
+
+        // 실무에서는 constructor를 거의 사용하지 않는다.
+        state = {
+          first: Math.ceil(Math.random() * 9),
+          second: Math.ceil(Math.random() * 9),
+          value: '', // input에 들어갈 값
+          result: '', // 결과값
+        };
+
+        // 일반 function을 사용해도 되지만 this가 달라지기 때문에 무조건 화살표 함수!
+        onSubmit = (e) => {
+          e.preventDefault();
+
+          // 구구단 로직
+          if (
+            parseInt(this.state.value) ===
+            this.state.first * this.state.second
+          ) {
+            this.setState((prevState) => {
+              // setState를 객체로도 쓰고 함수로도 사용하지만
+              // ✔ 예전 값으로 새로운 state를 만들 때 return이 되는 함수를 사용한다. 즉, this.state가 들어갈 경우 사용!
+              return {
+                result: `${this.state.first} X ${this.state.second} = ${prevState.value} 정답!`,
+                first: Math.ceil(Math.random() * 9),
+                second: Math.ceil(Math.random() * 9),
+                value: '',
+              };
+            });
+          } else {
+            this.setState({
+              result: '땡!',
+              value: '',
+            });
+          }
+        };
+
+        onChange = (e) => {
+          this.setState({ value: e.target.value });
+        };
+
+        // render는 화살표 함수를 써도 되고 안써도 된다.
+        render() {
+          return (
+            <React.Fragment>
+              <div>
+                {this.state.first} X {this.state.second} = ?
+              </div>
+              <form onSubmit={this.onSubmit}>
+                <input
+                  type="number"
+                  value={this.state.value}
+                  onChange={this.onChange}
+                />
+                <button>입력</button>
+              </form>
+              <div>{this.state.result}</div>
+            </React.Fragment>
+          );
+        }
+      }
+    </script>
+    <script type="text/babel">
+      ReactDOM.render(<GuGudan />, document.querySelector('#root'));
+    </script>
+  </body>
+</html>
