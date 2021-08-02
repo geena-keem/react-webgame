@@ -61,6 +61,7 @@
                 value: '',
               };
             });
+            this.input.focus();
           } else {
             this.setState({
               result: '땡!',
@@ -73,8 +74,19 @@
           this.setState({ value: e.target.value });
         };
 
+        input;
+
+        onRefInput = (c) => {
+          this.input = c;
+        };
+
         // render는 화살표 함수를 써도 되고 안써도 된다.
         render() {
+          // ✔ state가 바뀌었을 때 일어나는 현상
+          // => setState할 때마다 렌더링이 일어난다.
+          // => 렌더링이 많이 일어나면 느려지는 현상이 나타난다.
+          // console.log('렌더링');
+
           return (
             <React.Fragment>
               <div>
@@ -82,6 +94,7 @@
               </div>
               <form onSubmit={this.onSubmit}>
                 <input
+                  ref={this.onRefInput}
                   type="number"
                   value={this.state.value}
                   onChange={this.onChange}
