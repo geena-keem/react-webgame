@@ -20,7 +20,22 @@ module.exports = {
         test: /\.jsx?/, // js나 jsx파일을
         loader: 'babel-loader', // 바벨 로더을 적용해서 문법을 호환되게끔 바꿔준다.
         options: {
-          presets: ['@babel/preset-env', '@babel/preset-react'],
+          presets: [
+            [
+              '@babel/preset-env',
+              {
+                // @babel/preset-env에 대한 옵션
+                targets: {
+                  browsers: ['> 5% in KR', 'last 2 chrome versions'],
+                  // > 5% in KR: 한국에서 브라우저 점유율이 5%이상인 브라우저는 모두 지원한다.
+                  // {  "chrome": "91",  "edge": "91",  "ios": "14.5",  "samsung": "14" }
+                  // 참고: https://github.com/browserslist/browserslist#queries
+                },
+                debug: true,
+              },
+            ],
+            '@babel/preset-react',
+          ],
           // plugins: ['@babel/plugin-proposal-class-properties'],
           // 강의는 에러나서 이거 추가함 (npm i -D @babel/plugin-proposal-class-properties)
         },
