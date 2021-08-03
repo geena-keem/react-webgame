@@ -1,4 +1,5 @@
 const path = require('path'); // ✔ node 경로 조작
+const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
   name: 'word-relay-setting', // 웹팩 설정 이름
@@ -36,6 +37,7 @@ module.exports = {
             ],
             '@babel/preset-react',
           ],
+          plugins: ['react-refresh/babel'],
           // plugins: ['@babel/plugin-proposal-class-properties'],
           // 강의는 에러나서 이거 추가함 (npm i -D @babel/plugin-proposal-class-properties)
         },
@@ -43,8 +45,16 @@ module.exports = {
     ],
   },
 
+  plugins: [new RefreshWebpackPlugin()],
+
   output: {
     path: path.join(__dirname, 'dist'), // 현재 폴더 경로인 dist폴더
     filename: 'app.js',
+    publicPath: '/dist/', // app.use('/dist', express.static(__dirname, 'dist'))과 비슷하다. (가상경로)
   }, // 출력
+
+  devServer: {
+    publicPath: '/dist/',
+    hot: true,
+  },
 };
